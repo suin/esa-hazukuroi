@@ -1,0 +1,111 @@
+{
+  "name": "@suin/esa-hazukuroi",
+  "version": "1.0.0",
+  "description": "esa.ioのMarkdownを自動整形する関数です",
+  "keywords": [
+    "esa"
+  ],
+  "homepage": "https://github.com/suin/esa-hazukuroi#readme",
+  "bugs": {
+    "url": "https://github.com/suin/esa-hazukuroi/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suin/esa-hazukuroi.git"
+  },
+  "license": "MIT",
+  "author": "suin <suinyeze@gmail.com>",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "**/*.{js,ts,map}",
+    "!*.{test,spec}.*",
+    "!/types/this.d.ts"
+  ],
+  "scripts": {
+    "build": "netlify-lambda build -c webpack.config.js src/",
+    "serve": "netlify-lambda serve -c webpack.config.js src/",
+    "clean": "git clean -Xdf -e '!/.idea/**' -e '!/node_modules' -e '!/node_modules/**'",
+    "clean:dry": "git clean -Xdfn -e '!/.idea/**' -e '!/node_modules' -e '!/node_modules/**'",
+    "format": "pnpm prettier -- --write",
+    "format:check": "pnpm prettier -- --check",
+    "pack:preview": "PACKAGE=$(npm pack 2> /dev/null) sh -c 'set -eu && tar tf $PACKAGE | sort && rm $PACKAGE'",
+    "prettier": "prettier '**/*.{ts,tsx,json,json5,css,scss,graphql,gql,md,mdx,html,vue,yaml}'",
+    "reference": "typedoc --gitRevision \"`git describe --tags --abbrev=0 2>/dev/null || echo main`\" --out reference index.ts",
+    "reset": "git clean -Xdf -e '!/.idea/**'",
+    "reset:dry": "git clean -Xdfn -e '!/.idea/**'",
+    "semantic-release": "semantic-release",
+    "test": "jest"
+  },
+  "engines": {
+    "node": "^12.10.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,json,json5,css,scss,graphql,gql,md,mdx,html,vue,yaml}": "prettier --write",
+    "./package.json": "sort-package-json"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "CHANGELOG.md"
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.13.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/exec": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
+    "@types/aws-lambda": "^8.10.73",
+    "@types/jest": "^26.0.22",
+    "aws-lambda": "^1.0.6",
+    "husky": "^5.2.0",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.4",
+    "netlify-cli": "^3.13.8",
+    "netlify-lambda": "^2.0.3",
+    "prettier": "^2.2.1",
+    "prettier-plugin-md-nocjsp": "^1.0.2",
+    "semantic-release": "^17.4.2",
+    "sort-package-json": "^1.49.0",
+    "ts-jest": "^26.5.4",
+    "typedoc": "^0.20.34",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@suin/esa-api": "^3.2.0",
+    "@suin/esa-markdown-format": "^1.0.0",
+    "@suin/esa-webhook-router": "^1.0.0",
+    "source-map-support": "^0.5.19"
+  }
+}
