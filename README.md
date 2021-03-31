@@ -52,3 +52,9 @@ pnpm serve
 ```shell
 cat tests/post_create.json | http -v localhost:9000/esaHazukuroi
 ```
+
+### 内部構造を知る
+
+Markdownの整形処理は、本パッケージではなく[@suin/esa-markdown-format]が行っています。本パッケージは[@suin/esa-markdown-format]をHTTPで呼び出せるようにするラッパーです。Markdownの整形の問題を解決したい場合は、[@suin/esa-markdown-format]のコードを御覧ください。
+
+[@suin/esa-markdown-format]: https://github.com/suin/esa-markdown-format
