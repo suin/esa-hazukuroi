@@ -35,6 +35,27 @@ function createPayloadHandler(
     const number = payload.post.number;
     const api = createClient({ team, token });
 
+    // Webhook接続時のテストデータを無視する
+    if (team === "docs" && number === 2) {
+      callback(null, {
+        statusCode: 200,
+        headers: { "content-type": "text/plain" },
+        body: "OK",
+      });
+      return;
+    }
+
+    // 過去のリビジョンにロールバックするケースは、自動整形に何らかの問題があるときの可能性があるので、整形対象から除外する
+    if (payload.post.message.match(/^Roll back to/)) {
+      console.log("ロールバックのための変更は自動整形しない");
+      callback(null, {
+        statusCode: 200,
+        headers: { "content-type": "text/plain" },
+        body: "OK",
+      });
+      return;
+    }
+
     console.log({ team, number });
     // todo: error handling
     const { post } = await api.getPost(number);
