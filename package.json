@@ -104,7 +104,7 @@
   },
   "dependencies": {
     "@suin/esa-api": "^3.2.0",
-    "@suin/esa-markdown-format": "^1.0.0",
+    "@suin/esa-markdown-format": "^1.2.0",
     "@suin/esa-webhook-router": "^1.0.0",
     "source-map-support": "^0.5.19"
   }
