@@ -2,8 +2,9 @@ import { APIGatewayProxyCallback, APIGatewayProxyHandler } from "aws-lambda";
 import { createRouter, PostCreate, PostUpdate } from "@suin/esa-webhook-router";
 import "source-map-support/register";
 import { isValidEnv } from "./env";
-import { createClient } from "@suin/esa-api";
-import format from "@suin/esa-markdown-format";
+import { formatEsaPost } from "./formatEsaPost";
+import * as Diff from "diff";
+import "colors";
 
 export const handler: APIGatewayProxyHandler = (event, _, callback) => {
   const errors: string[] = [];
@@ -30,60 +31,51 @@ function createPayloadHandler(
   callback: APIGatewayProxyCallback,
   token: string
 ) {
-  return async function payloadHandler(payload: PostCreate | PostUpdate) {
-    const team = payload.team.name;
-    const number = payload.post.number;
-    const api = createClient({ team, token });
-
-    // Webhook接続時のテストデータを無視する
-    if (team === "docs" && number === 2) {
-      callback(null, {
-        statusCode: 200,
-        headers: { "content-type": "text/plain" },
-        body: "OK",
-      });
-      return;
-    }
-
-    // 過去のリビジョンにロールバックするケースは、自動整形に何らかの問題があるときの可能性があるので、整形対象から除外する
-    if (payload.post.message.match(/^Roll back to/)) {
-      console.log("ロールバックのための変更は自動整形しない");
-      callback(null, {
-        statusCode: 200,
-        headers: { "content-type": "text/plain" },
-        body: "OK",
-      });
-      return;
-    }
-
-    console.log({ team, number });
-    // todo: error handling
-    const { post } = await api.getPost(number);
-    console.log({ post });
-    if (post) {
-      const clean = format(post.body_md, { team });
-      if (clean !== post.body_md) {
-        console.log({ clean });
-        // todo: error handling
-        await api.updatePost(number, {
-          body_md: clean,
-          updated_by: "esa_bot",
-          message: "Markdownを整形",
-          original_revision: {
-            body_md: post.body_md,
-            number: post.revision_number,
-            user: post.updated_by.screen_name,
-          },
-        });
-      } else {
-        console.log("整形の必要がない");
-      }
-    }
-
+  const ok = () => {
     callback(null, {
       statusCode: 200,
       headers: { "content-type": "text/plain" },
       body: "OK",
     });
+  };
+
+  return async function payloadHandler(payload: PostCreate | PostUpdate) {
+    const team = payload.team.name;
+    const number = payload.post.number;
+
+    // Webhook接続時のテストデータを無視する
+    if (team === "docs" && number === 2) {
+      ok();
+      return;
+    }
+
+    // 過去のリビジョンにロールバックするケースは、自動整形に何らかの問題があるときの可能性があるので、整形対象から除外する
+    if (payload.post.message.match(/^Roll back to/)) {
+      console.info("ロールバックのための変更は自動整形しない");
+      ok();
+      return;
+    }
+
+    const result = await formatEsaPost({ team, number, token });
+
+    switch (result.type) {
+      case "failure":
+        console.error(result.error);
+        break;
+      case "nothing_to_do":
+        console.info(`整形する必要がない`, { team, number });
+        break;
+      case "formatted":
+        console.info(`整形に成功`, { team, number });
+        const diff = Diff.diffLines(result.before, result.after);
+        diff.forEach((part) => {
+          const color = part.added ? "green" : part.removed ? "red" : "grey";
+          process.stdout.write(part.value[color]);
+        });
+        console.log();
+        break;
+    }
+
+    ok();
   };
 }

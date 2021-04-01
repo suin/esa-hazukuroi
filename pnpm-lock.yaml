@@ -2,6 +2,8 @@ dependencies:
   '@suin/esa-api': 3.2.0
   '@suin/esa-markdown-format': 1.2.0
   '@suin/esa-webhook-router': 1.0.0
+  colors: 1.4.0
+  diff: 5.0.0
   source-map-support: 0.5.19
 devDependencies:
   '@babel/preset-typescript': 7.13.0
@@ -9,6 +11,7 @@ devDependencies:
   '@semantic-release/exec': 5.0.0_semantic-release@17.4.2
   '@semantic-release/git': 9.0.0_semantic-release@17.4.2
   '@types/aws-lambda': 8.10.73
+  '@types/diff': 5.0.0
   '@types/jest': 26.0.22
   aws-lambda: 1.0.6
   husky: 5.2.0
@@ -2506,6 +2509,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-W24e3Ycz1UZPgr1ZEDHlK4XnvOr+CpJH3qNsFeqXwwlW/9END9gxn3oJSsp7gYdiQxrXUHwUUd3xuzVz37MrZQ==
+  /@types/diff/5.0.0:
+    dev: true
+    resolution:
+      integrity: sha512-jrm2K65CokCCX4NmowtA+MfXyuprZC13jbRuwprs6/04z/EcFg/MCwYdsHn+zgV4CQBiATiI7AEq7y1sZCtWKA==
   /@types/download/6.2.4:
     dependencies:
       '@types/decompress': 4.2.3
@@ -4398,7 +4405,6 @@ packages:
     resolution:
       integrity: sha1-BDP0TYCWgP3rYO0mDxsMJi6CpAs=
   /colors/1.4.0:
-    dev: true
     engines:
       node: '>=0.1.90'
     resolution:
@@ -5226,6 +5232,12 @@ packages:
       node: '>= 10.14.2'
     resolution:
       integrity: sha512-Mv/TDa3nZ9sbc5soK+OoA74BsS3mL37yixCvUAQkiuA4Wz6YtwP/K47n2rv2ovzHZvoiQeA5FTQOschKkEwB0Q==
+  /diff/5.0.0:
+    dev: false
+    engines:
+      node: '>=0.3.1'
+    resolution:
+      integrity: sha512-/VTCrvm5Z0JGty/BWHljh+BAiw3IK+2j87NGMu8Nwc/f48WoDAC395uomO9ZD117ZOBaHmkX1oyLvkVM/aIT3w==
   /diffie-hellman/5.0.3:
     dependencies:
       bn.js: 4.12.0
@@ -13812,8 +13824,11 @@ specifiers:
   '@suin/esa-markdown-format': ^1.2.0
   '@suin/esa-webhook-router': ^1.0.0
   '@types/aws-lambda': ^8.10.73
+  '@types/diff': ^5.0.0
   '@types/jest': ^26.0.22
   aws-lambda: ^1.0.6
+  colors: ^1.4.0
+  diff: ^5.0.0
   husky: ^5.2.0
   jest: ^26.6.3
   lint-staged: ^10.5.4
