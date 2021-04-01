@@ -49,9 +49,18 @@ function createPayloadHandler(
       return;
     }
 
+    const message = payload.post.message;
+
     // 過去のリビジョンにロールバックするケースは、自動整形に何らかの問題があるときの可能性があるので、整形対象から除外する
-    if (payload.post.message.match(/^Roll back to/)) {
+    if (message.match(/^Roll back to/)) {
       console.info("ロールバックのための変更は自動整形しない");
+      ok();
+      return;
+    }
+
+    // 意図的に整形対象から除外したいときのために
+    if (message.match(/\[(noformat|no-format|no_format|no format|整形不要)]/)) {
+      console.log("明示的にな整形不要指示");
       ok();
       return;
     }

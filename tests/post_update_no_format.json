@@ -1,0 +1,35 @@
+{
+  "kind": "post_update",
+  "team": {
+    "name": "suin"
+  },
+  "post": {
+    "name": "たいとる",
+    "body_md": "ほんぶん",
+    "body_html": "<p>ほんぶん</p>\n",
+    "message": "更新するが整形はしなくていい [noformat]",
+    "wip": false,
+    "number": 1253,
+    "url": "https://suin.esa.io/posts/148",
+    "diff_url": "https://suin.esa.io/posts/148/revisions/3"
+  },
+  "user": {
+    "icon": {
+      "url": "https://img.esa.io/uploads/production/users/1/icon/***.png",
+      "thumb_s": {
+        "url": "https://img.esa.io/uploads/production/users/1/icon/thumb_s_***.png"
+      },
+      "thumb_ms": {
+        "url": "https://img.esa.io/uploads/production/users/1/icon/thumb_ms_***.png"
+      },
+      "thumb_m": {
+        "url": "https://img.esa.io/uploads/production/users/1/icon/thumb_m_***.png"
+      },
+      "thumb_l": {
+        "url": "https://img.esa.io/uploads/production/users/1/icon/thumb_l_***.png"
+      }
+    },
+    "name": "Taro Yamada",
+    "screen_name": "taro"
+  }
+}
