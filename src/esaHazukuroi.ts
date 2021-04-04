@@ -3,8 +3,6 @@ import { createRouter, PostCreate, PostUpdate } from "@suin/esa-webhook-router";
 import "source-map-support/register";
 import { isValidEnv } from "./env";
 import { formatEsaPost } from "./formatEsaPost";
-import * as Diff from "diff";
-import "colors";
 
 export const handler: APIGatewayProxyHandler = (event, _, callback) => {
   const errors: string[] = [];
@@ -82,12 +80,6 @@ function createPayloadHandler(
         break;
       case "formatted":
         console.info(`整形に成功`, { team, number });
-        const diff = Diff.diffLines(result.before, result.after);
-        diff.forEach((part) => {
-          const color = part.added ? "green" : part.removed ? "red" : "grey";
-          process.stdout.write(part.value[color]);
-        });
-        console.log();
         break;
     }
 
