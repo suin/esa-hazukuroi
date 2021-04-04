@@ -65,7 +65,13 @@ function createPayloadHandler(
       return;
     }
 
-    const result = await formatEsaPost({ team, number, token });
+    let updateMessage = "Markdownを整形しました。";
+    // 整形前の変更が通知不要の場合、整形の変更も通知したくないことが多いので
+    if (message.match(/\[skip notice]/)) {
+      updateMessage += " [skip notice]";
+    }
+
+    const result = await formatEsaPost({ team, number, token, updateMessage });
 
     switch (result.type) {
       case "failure":
